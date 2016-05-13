@@ -82,8 +82,15 @@ $("document").ready(function(){
 	
 	List<Picture> pictures = md.getAllPicturesByMovieId(mostPopularId);
 	Random rand = new Random();
-	int  picture_no = rand.nextInt(pictures.size());
-	String pictureLink = pictures.get(picture_no).link;
+	String pictureLink;
+	
+	if(pictures.size()>0){
+		int  picture_no = rand.nextInt(pictures.size());
+		pictureLink = pictures.get(picture_no).link;
+	}
+	else{
+		pictureLink = "http://www.abortionno.org/wp-content/uploads/2016/02/no-image-found.jpg";
+	}
 	%>
 	console.log("<%= pictureLink%>");
 	$("body").css("background-image","url(<%= pictureLink%>)");

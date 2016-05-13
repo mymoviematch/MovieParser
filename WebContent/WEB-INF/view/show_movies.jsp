@@ -296,8 +296,6 @@ function setRandomPicture(){
                 	console.log(json);
                 }
         	})
-	console.log("random: ");
-	$("#quiz-img").attr("src","<%=((Picture)movies.get(0).getPictures().toArray()[4]).link%>");
 }
 
 function initMap() {

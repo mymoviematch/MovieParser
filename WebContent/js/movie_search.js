@@ -8,13 +8,11 @@ $(document).ready(function(){
 	
 	$("#movie-id").keyup(function(event){
 	    if(event.keyCode == 13){
-	    	console.log("enter");
 	        $("#getBtn").click();
 	    }
 	});
 	
 	$("#fixedbutton").on('click',function(){
-		console.log('clicked');
 		scrollToTop();
 	});
 	
@@ -22,7 +20,6 @@ $(document).ready(function(){
 	$("#fixedbutton").css('opacity',opacity);
 	
 	$("#element-search").on('click',function(){
-		console.log($("#search").val());
 		scrollToElement($("#search").val());
 	})
 	
@@ -74,12 +71,9 @@ window.onscroll = function(ev) {
 	var opacity = (window.innerHeight + window.scrollY)/document.body.offsetHeight;
 	$("#fixedbutton").css('opacity',opacity);
 	
-	console.log(opacity);
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        console.log("bottom");
     }
     if(window.scrollY > 20 && !$(".nav-justified").hasClass("not-calm")){
-    	console.log("adding calm class");
     	$(".nav-justified").addClass("not-calm");
     	$(".nav-justified").removeClass("calm");
     }
@@ -87,7 +81,6 @@ window.onscroll = function(ev) {
     	$(".nav-justified").removeClass("not-calm");
     	$(".nav-justified").addClass("calm");
     }
-    console.log(window.scrollY);
 };
 
 function scrollToElement(ElementId){
@@ -98,7 +91,6 @@ function scrollToElement(ElementId){
      	var target = $(ElementId);
      	
      	if(target!=null){
-	     	console.log(target.offset().top);
 	     	var top = target.offset().top;
 	     	 $('html,body').animate({scrollTop: top-10}, 500);
 	     }
@@ -225,15 +217,13 @@ function getMovie(movieId) {
                 crossDomain: true,
                 success: function(json) {
                 	var data = JSON.parse(json);
-                	console.log(json);
-                	console.log("api url" + data[0].api_url);
-                	console.log("CSFD:"+data[0].csfd_url);
-                	$("#csfd_link").val(data[0].csfd_url);
+                  	$("#csfd_link").val(data[0].csfd_url);
                 }
         	})
         }
         
         function setTrailersAdicts(url){
+        	console.log(url);
         	$.ajax({
                 url: url,
                 dataType: "text",
@@ -276,7 +266,6 @@ function getMovie(movieId) {
                 	var back_div = $("#back_div");
                 	back_div.empty();
                 	for(i=0;i<data.backdrops.length;i++){
-                		console.log(data.backdrops[i].file_path);
                 		var fullPath = base_url +backdrop_size +data.backdrops[i].file_path;
                 		
                 		"backdrop"+i+"d"
@@ -295,11 +284,9 @@ function getMovie(movieId) {
         function removeBackDrop(anchorId){
         	imgId = anchorId+"b";
         	downloadId = anchorId+"d";
-        	console.log($(imgId));
         	if($("#"+imgId).hasClass("img-active")){
         		$("#"+imgId).removeClass("img-active");
         		$("#"+imgId).addClass("img-innactive");
-        		console.log($("#"+downloadId).val());
         		$("#"+downloadId).val(false);
         		//alert("active");
         	}
@@ -307,8 +294,6 @@ function getMovie(movieId) {
         		//$("#"+imgId).addClass("img-innactive");
         		$("#"+imgId).removeClass("img-innactive");
         		$("#"+imgId).addClass("img-active");
-        		console.log("innactive");
-        		console.log($("#"+downloadId).val());
         		$("#"+downloadId).val(true);
         	}
         }
