@@ -1,6 +1,6 @@
 package mm.simple.model;
 
-public class PersonHelper {
+public class PersonHelper extends MovieElement{
 
 public String role;
 public String order;

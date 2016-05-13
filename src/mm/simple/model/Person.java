@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Person")
-public class Person {
+public class Person extends MovieElement{
 public String name,picture_link;
 Long person_id;
 private Set<MapMoviePerson> moviePerson = new HashSet<MapMoviePerson>(0);

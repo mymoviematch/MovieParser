@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "Genre")
-public class Genre {
+public class Genre extends MovieElement{
 	public long genre_id;
 	public String nameEn, nameCz,nameSk;
 	private Set<Movie> movies = new HashSet<Movie>(0);

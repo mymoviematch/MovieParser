@@ -7,13 +7,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import mm.simple.dao.MovieDao;
+import mm.simple.dao.DatabaseEngine;
+import mm.simple.dao.elements.MovieDao;
 import mm.simple.model.Country;
 import mm.simple.model.Genre;
 import mm.simple.model.Movie;
+import mm.simple.model.MovieElement;
 import mm.simple.model.PersonHelper;
 import mm.simple.model.Picture;
-import mm.simple.model.Test;
 import mm.simple.model.helper.Backdrop;
 import mm.simple.model.helper.Const;
 
@@ -31,46 +32,46 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 public class MovieController {
 	
-
-	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	public ModelAndView saveMovie(HttpServletRequest request, HttpServletResponse response){
-		System.out.println("prisiel movie!");
+		
+		DatabaseEngine engine = DatabaseEngine.getInstance();
+		Movie movie = new Movie();
+		
 		List<PersonHelper> persons = new ArrayList<PersonHelper>();
 		List<Country> countries = new ArrayList<Country>();
 		List<Genre> genresAll = new ArrayList<Genre>();
 		List<Backdrop> backdrops = new ArrayList<Backdrop>();
 		List<Picture> pictures = new ArrayList<Picture>();
 		
-		MovieDao md = new MovieDao();
-		Movie movie = new Movie();
-		String backdrop; 
-		int i =0;
+		int i = 0;
+		String genres;
+
+		
+		genres = request.getParameter("genres");
 		
 		movie.nameOrig = request.getParameter("title");
-		// = request.getParameter("original_title");
 		movie.descriptionEn = request.getParameter("overview");
-		String genres = request.getParameter("genres");
 		movie.releaseDate = Date.valueOf(request.getParameter("release_date"));
-		//movie.releaseDate = new Date();
 		movie.imdbId = request.getParameter("imdb_id");
-		//String budget = request.getParameter("budget");
-		//String youtube_video = request.getParameter("youtube_video");
 		movie.trailerUrl = request.getParameter("addict_video");
 		movie.nameSk = request.getParameter("title_sk");
 		movie.descriptionSk = request.getParameter("overview_sk");
-		//String release_date_sk = request.getParameter("release_date_sk");
 		movie.nameCz = request.getParameter("title_cz");
 		movie.descriptionCz = request.getParameter("overview_cz");
-		//String release_date_cz = request.getParameter("release_date_cz");
 		movie.popularity = Float.valueOf(request.getParameter("popularityNumber"));
 		movie.csfdUrl = request.getParameter("csfd_link");
+		
+		//String release_date_sk = request.getParameter("release_date_sk");
+		//String budget = request.getParameter("budget");
+		//String release_date_cz = request.getParameter("release_date_cz");
+		//String youtube_video = request.getParameter("youtube_video");
 		//TODO:
 		movie.year = 1212;
 		movie.imdbRating = 13;
 		movie.lenghtMin = 80;
 		
-		movie = md.addMovie(movie);
+		movie = engine.getMovieDao().addMovie(movie);
 		if(movie==null){
 			return new ModelAndView("result","info","movie already in DB!");
 		}
@@ -79,8 +80,7 @@ public class MovieController {
 			
 			bd.setLink(request.getParameter("backdrop"+i));
 			bd.setDownload(Boolean.valueOf(request.getParameter("backdrop"+i+"d")));
-			//PictureSaver ps = new PictureSaver();
-			//ps.save(movie.nameOrig+"picture"+i, bd);
+
 			if(bd.isDownload()){
 				Picture picture = new Picture();
 				picture.link = bd.getLink();
@@ -92,7 +92,7 @@ public class MovieController {
 			System.out.println(bd.isDownload());
 			i++;
 		}
-		md.addPicture(pictures,movie);
+		engine.putList(pictures,movie);
 		i=0;
 		
 		while((request.getParameter("actor_name"+i))!=null){
@@ -117,7 +117,7 @@ public class MovieController {
 			persons.add(person);
 			i++;
 		}
-		md.addPerson(persons,movie);
+		engine.putList(persons,movie);
 		
 		i=0;
 		
@@ -131,8 +131,9 @@ public class MovieController {
 			countries.add(country);
 			i++;
 		}
-		md.addCountry(countries,movie);
+		engine.putList(countries,movie);
 		
+		try{
 		String[] genresS = genres.split(",");
 		for(String gen : genresS){
 			Genre genr = new Genre();
@@ -140,14 +141,19 @@ public class MovieController {
 			while(!Const.genres[i][0].equals(gen)){
 				i++;
 			}
-			
 			genr.nameCz = Const.genres[i][1];
 			genr.nameEn = gen;
 			genr.nameSk = Const.genres[i][2];
 			genresAll.add(genr);
 		}
-		md.addGenre(genresAll,movie);
 		
+		engine.putList(genresAll,movie);
+		
+		}
+		catch(Exception e)
+		{
+			
+		}
 		return new ModelAndView("result","info","succesfully added!");
 	}
 
@@ -164,13 +170,4 @@ public class MovieController {
 		return new ModelAndView("movie_list");
 	}
 	
-	
-	@RequestMapping(value = "/movieList3",headers="Accept=*/*", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-    public Test sayPlainTextHello() {
-		Test test = new Test();
-		test.name = "test";
-		System.out.println("dass");
-        return test;
-    }
 }

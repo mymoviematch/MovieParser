@@ -15,9 +15,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Picture")
-public class Picture {
+public class Picture extends MovieElement{
 public String type,link;
 Long picture_id;
+public String local;
 public Movie movie;
 
 public String getType() {
@@ -27,6 +28,12 @@ public void setType(String type) {
 	this.type = type;
 }
 
+public String getLocal() {
+	return local;
+}
+public void setLocal(String local) {
+	this.local = local;
+}
 @Id
 @GeneratedValue
 @Column(name = "picture_id")

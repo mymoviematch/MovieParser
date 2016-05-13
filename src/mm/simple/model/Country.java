@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Country")
-public class Country {
+public class Country extends MovieElement{
 
 	public long country_id;
 	public String nameEn;

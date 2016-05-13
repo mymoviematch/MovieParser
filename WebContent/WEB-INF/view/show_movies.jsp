@@ -1,4 +1,4 @@
-<%@ page import="mm.simple.dao.MovieDao" %>
+<%@ page import="mm.simple.dao.elements.MovieDao" %>
 <%@ page import="mm.simple.model.helper.MovieHelper" %>
 <%@ page import="mm.simple.model.Genre" %>
 <%@ page import="mm.simple.model.Picture" %>
@@ -64,7 +64,7 @@ List<Picture> pictures = md.getAllPicturesByMovieId(movie_id);
   <!-- Indicators -->
   <ol class="carousel-indicators">
   <% for(int i=0;i<pictures.size();i++){ %>
-  	<img class="small-tile" src="<%=pictures.get(i).link %>" data-target="#myCarousel" data-slide-to=<%=i %> <%= (i==0) ? "class='active'" : ""  %>>
+  	<img class="small-tile" src="<%=pictures.get(i).getLocal() %>" data-target="#myCarousel" data-slide-to=<%=i %> <%= (i==0) ? "class='active'" : ""  %>>
     
     <%} %>
   </ol>
@@ -83,7 +83,7 @@ List<Picture> pictures = md.getAllPicturesByMovieId(movie_id);
    
 	<div class="item">
 	<% }%>
-      <img src="<%=picture.link %>">
+      <img src="<%=picture.getLocal() %>">
     </div>
    <%
    }

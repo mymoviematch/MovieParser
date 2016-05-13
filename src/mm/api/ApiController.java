@@ -6,7 +6,6 @@ import javax.ws.rs.Produces;
 
 import org.springframework.web.servlet.ModelAndView;
 
-import mm.simple.model.Test;
 
 public class ApiController {
 
@@ -16,17 +15,6 @@ public class ApiController {
 		return new ModelAndView("show_movies","movie",2);
 	}
 	
-	@Path("/movieList")
-	@GET
-	@Produces("application/json")
-	public Test test2(){
-		
-		System.out.println("vystup: bba");
-		Test test = new Test();
-		test.name = "menos";
-		System.out.println("vystup: bba");
-		return test;
-	}
 	
 	@Path("/hello")
 	@GET

@@ -21,7 +21,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "Movie")
-public class Movie implements Comparable<Movie>{
+public class Movie extends MovieElement implements Comparable<Movie>{
 
 	
 public String nameOrig, nameCz, nameSk,
